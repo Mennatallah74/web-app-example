@@ -4,6 +4,7 @@ pipeline {
     tools {
         jdk 'JDK'       // Ensure you configure JDK in Jenkins with this name
         nodejs 'NodeJS'
+        sonarQubeScanner 'sonar-scanner'
     }
 
     parameters {
@@ -25,8 +26,8 @@ pipeline {
                         -Dsonar.projectKey=simple-web-app \
                         -Dsonar.projectName=Arts-web-app \
                         -Dsonar.sources=. \
-                        -Dsonar.java.binaries=. \
-                        -Dsonar.host.url=http://localhost:9000
+                        -Dsonar.host.url=\${SONAR_HOST_URL} \
+                        -Dsonar.login=\${SONAR_AUTH_TOKEN}
                     """
                 }
             }
