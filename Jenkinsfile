@@ -20,7 +20,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar-server') {
                     sh """
-                    export SONAR_SCANNER_OPTS="-Xmx4G"
+                    export SONAR_SCANNER_OPTS="-Xmx512m"
                     ${SCANNER_HOME}/bin/sonar-scanner \
                     -Dsonar.projectKey=simple-web-app \
                     -Dsonar.projectName=Arts-web-app \
