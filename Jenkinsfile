@@ -16,6 +16,11 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
         stage('SonarQube Analysis: 2') {
             steps {
@@ -25,8 +30,6 @@ pipeline {
                         -Dsonar.projectKey=simple-web-app \
                         -Dsonar.projectName=Arts-web-app \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=$SONAR_HOST_URL \
-                        -Dsonar.login=$SONAR_AUTH_TOKEN
                     """
                 }
             }
