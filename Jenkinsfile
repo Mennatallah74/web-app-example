@@ -21,9 +21,12 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar-server') {
                     sh """
-                    ${SCANNER_HOME}/bin/sonar-scanner \
-                    -Dsonar.projectName=Arts-web-app \
-                    -Dsonar.projectKey=simple-web-app
+                     ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=simple-web-app \
+                        -Dsonar.projectName=Arts-web-app \
+                        -Dsonar.sources=. \
+                        -Dsonar.java.binaries=. \
+                        -Dsonar.host.url=http://localhost:9000
                     """
                 }
             }
