@@ -20,14 +20,9 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar-server') {
                     sh """
-                    export SONAR_SCANNER_OPTS="-Xmx512m"
                     ${SCANNER_HOME}/bin/sonar-scanner \
-                    -Dsonar.projectKey=simple-web-app \
                     -Dsonar.projectName=Arts-web-app \
-                    -Dsonar.sources=. \
-                    -Dsonar.java.binaries=. \
-                    -Dsonar.host.url=http://localhost:9000
-                    
+                    -Dsonar.projectKey=simple-web-app
                     """
                 }
             }
@@ -60,7 +55,7 @@ pipeline {
 
         stage('Login to ECR & Tag and Push Image: 8') {
             steps {
-                 withAWS(region: 'eu-central-1', credentials: 'AWS_auth') {
+                 withAWS(region: 'eu-central-1', credentials: 'sonar-cred') {
                     sh """
                     aws ecr get-login-password --region eu-central-1 \
                     | docker login --username AWS --password-stdin ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com
