@@ -21,14 +21,14 @@ pipeline {
         stage('SonarQube Analysis: 2') {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh """
+                    sh '''
                      ${SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectKey=simple-web-app \
                         -Dsonar.projectName=Arts-web-app \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=\${SONAR_HOST_URL} \
-                        -Dsonar.login=\${SONAR_AUTH_TOKEN}
-                    """
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=$SONAR_AUTH_TOKEN
+                    '''
                 }
             }
         }
