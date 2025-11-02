@@ -74,11 +74,11 @@ pipeline {
                     sh """
                     aws ecr get-login-password --region eu-central-1 \
                     | docker login --username AWS --password-stdin ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com
-                    docker tag ${params.ECR_REPO_NAME}-api:$BUILD_NUMBER ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:$BUILD_NUMBER
-                    docker tag ${params.ECR_REPO_NAME}-web:$BUILD_NUMBER ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:$BUILD_NUMBER
+                    docker tag ${params.ECR_REPO_NAME}-api:$BUILD_NUMBER ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:api-$BUILD_NUMBER
+                    docker tag ${params.ECR_REPO_NAME}-web:$BUILD_NUMBER ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:web-$BUILD_NUMBER
 
-                    docker push ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:$BUILD_NUMBER
-                    docker push ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:$BUILD_NUMBER
+                    docker push ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:api-$BUILD_NUMBER
+                    docker push ${params.AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/${params.ECR_REPO_NAME}:web-$BUILD_NUMBER
                     """
                 }
             }
