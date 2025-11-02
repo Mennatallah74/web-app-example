@@ -35,7 +35,11 @@ pipeline {
 
         stage('Quality Gates: 3') {
             steps {
-                waitForQualityGate abortPipeline: true
+                withSonarQubeEnv('sonar-server') {
+                    timeout(time: 1, unit: 'HOURS') {
+                        waitForQualityGate abortPipeline: true
+                    }
+                }
             }
         }
 
