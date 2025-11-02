@@ -4,7 +4,7 @@ pipeline {
     tools {
         jdk 'JDK'       // Ensure you configure JDK in Jenkins with this name
         nodejs 'NodeJS'
-        sonarQubeScanner 'sonar-scanner'
+        
     }
 
     parameters {
