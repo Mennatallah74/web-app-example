@@ -21,14 +21,25 @@ pipeline {
         stage('SonarQube Analysis: 2') {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh '''
-                     ${SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=simple-web-app \
-                        -Dsonar.projectName=Arts-web-app \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=$SONAR_HOST_URL \
-                        -Dsonar.login=$SONAR_AUTH_TOKEN
-                    '''
+                    script {
+                        def sonarHost = env.SONAR_HOST_URL?.trim()
+                        if (!sonarHost) {
+                            error 'SONAR_HOST_URL is not defined; check SonarQube server configuration in Jenkins.'
+                        }
+                        if (!sonarHost.toLowerCase().startsWith('http')) {
+                            sonarHost = "http://${sonarHost}".toString()
+                        }
+                        env.SONAR_HOST_URL = sonarHost
+
+                        sh """
+                         ${env.SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectKey=simple-web-app \
+                            -Dsonar.projectName=Arts-web-app \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=${env.SONAR_HOST_URL} \
+                            -Dsonar.login=${env.SONAR_AUTH_TOKEN}
+                        """
+                    }
                 }
             }
         }
@@ -36,8 +47,19 @@ pipeline {
         stage('Quality Gates: 3') {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    timeout(time: 1, unit: 'HOURS') {
-                        waitForQualityGate abortPipeline: true
+                    script {
+                        def sonarHost = env.SONAR_HOST_URL?.trim()
+                        if (!sonarHost) {
+                            error 'SONAR_HOST_URL is not defined; check SonarQube server configuration in Jenkins.'
+                        }
+                        if (!sonarHost.toLowerCase().startsWith('http')) {
+                            sonarHost = "http://${sonarHost}".toString()
+                        }
+                        env.SONAR_HOST_URL = sonarHost
+
+                        timeout(time: 1, unit: 'HOURS') {
+                            waitForQualityGate abortPipeline: true
+                        }
                     }
                 }
             }
