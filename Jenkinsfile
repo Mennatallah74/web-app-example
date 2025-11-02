@@ -20,6 +20,9 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar-server') {
                     sh """
+                    export SONAR_SCANNER_OPTS="-Xmx4G"
+                    sonar-scanner -Dsonar.java.binaries=. \
+                    -Dsonar.scanner.forceJavaOpts="-Xmx4G"
                     ${SCANNER_HOME}/bin/sonar-scanner \
                     -Dsonar.projectName=Arts-web-app \
                     -Dsonar.projectKey=simple-web-app
